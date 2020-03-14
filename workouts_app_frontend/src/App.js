@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import NewForm from './components/NewForm.js'
 let baseURL = process.env.REACT_APP_BASEURL
 
 if (process.env.NODE_ENV === 'development') {
@@ -14,6 +15,7 @@ class App extends Component {
       exercises: []
     }
     this.getExercises = this.getExercises.bind(this)
+    this.handleAddExercise = this.handleAddExercise.bind(this)
   }
   componentDidMount() {
     this.getExercises()
@@ -27,10 +29,17 @@ class App extends Component {
       console.error(e)
     }
   }
+  handleAddExercise(exercise) {
+    const copyExercises = [exercise, ...this.state.exercise]
+    this.setState({
+      exercise: copyExercises
+    })
+  }
   render() {
     return (
       <div>
         <h1>Exercises</h1>
+        <NewForm handleAddExercise={this.handleAddExercise} baseURL={baseURL}/>
         <table>
           <tbody>
             { this.state.exercises.map(exercise => {
