@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import NewForm from './components/NewForm.js'
+import Show from './components/Show.js'
 let baseURL = process.env.REACT_APP_BASEURL
 
 if (process.env.NODE_ENV === 'development') {
@@ -18,9 +19,11 @@ class App extends Component {
     this.handleAddExercise = this.handleAddExercise.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
   }
+
   componentDidMount() {
     this.getExercises()
   }
+
   async getExercises() {
     try {
       let response = await fetch(`${baseURL}/workouts`)
@@ -30,12 +33,14 @@ class App extends Component {
       console.error(e)
     }
   }
+
   handleAddExercise(exercise) {
     const copyExercises = [exercise, ...this.state.exercise]
     this.setState({
       exercise: copyExercises
     })
   }
+
   async deleteExercise(id) {
     try {
       let response = await fetch(`${baseURL}/workouts/${id}`, {
@@ -50,6 +55,13 @@ class App extends Component {
       console.log(e);
     }
   }
+
+  //show function
+  getExercise(exercise){
+      this.setState({exercise: exercise})
+  }
+
+
   render() {
     return (
       <div>
@@ -59,7 +71,7 @@ class App extends Component {
           <tbody>
             { this.state.exercises.map(exercise => {
               return (
-                  <tr key={exercise._id}>
+                  <tr key={exercise._id} onMouseOver={()=> this.getExercise(exercise)}>
                     <td id={exercise._id}>{exercise.exercise}</td>
                     <td id={exercise._id}>{exercise.description}</td>
                     <td onClick={() => this.deleteExercise(exercise._id)}>X</td>
@@ -69,6 +81,12 @@ class App extends Component {
             }
           </tbody>
         </table>
+        {/*Enter code to show the SHOW div for a particular exercise*/}
+        {
+            this.state.exercise
+            ? <Show exercise={this.state.exercise}/>
+            : null
+        }
       </div>
     )
   }
