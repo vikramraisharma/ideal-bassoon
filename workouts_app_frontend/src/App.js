@@ -16,6 +16,7 @@ class App extends Component {
     }
     this.getExercises = this.getExercises.bind(this)
     this.handleAddExercise = this.handleAddExercise.bind(this)
+    this.deleteExercise = this.deleteExercise.bind(this)
   }
   componentDidMount() {
     this.getExercises()
@@ -35,6 +36,20 @@ class App extends Component {
       exercise: copyExercises
     })
   }
+  async deleteExercise(id) {
+    try {
+      let response = await fetch(`${baseURL}/workouts/${id}`, {
+        method: 'DELETE'
+      })
+      let data = await response.json()
+      const foundExercise = this.state.exercises.findIndex(exercise => exercise._id === id)
+      const copyExercises = [...this.state.exercises]
+      copyExercises.splice(foundExercise, 1)
+      this.setState({exercises: copyExercises})
+    } catch(e) {
+      console.log(e);
+    }
+  }
   render() {
     return (
       <div>
@@ -47,6 +62,7 @@ class App extends Component {
                   <tr key={exercise._id}>
                     <td id={exercise._id}>{exercise.exercise}</td>
                     <td id={exercise._id}>{exercise.description}</td>
+                    <td onClick={() => this.deleteExercise(exercise._id)}>X</td>
                   </tr>
                 )
               })
