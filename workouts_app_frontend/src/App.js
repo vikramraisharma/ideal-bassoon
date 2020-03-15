@@ -13,11 +13,13 @@ class App extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      exercises: []
+      exercises: [],
+      exercise: {}
     }
     this.getExercises = this.getExercises.bind(this)
     this.handleAddExercise = this.handleAddExercise.bind(this)
     this.deleteExercise = this.deleteExercise.bind(this)
+    this.toggleComplete = this.toggleComplete.bind(this)
   }
 
   componentDidMount() {
@@ -61,6 +63,27 @@ class App extends Component {
       this.setState({exercise: exercise})
   }
 
+  //update function
+   async toggleComplete(exercise){
+      // console.log(exercise)
+      try{
+          let response = await fetch(baseURL + '/workouts/' + exercise._id, {
+              method: 'PUT',
+              body: JSON.stringify({completed: !exercise.completed}),
+              headers:{
+                  'Content-Type': 'application/json'
+              }
+          })
+          let updatedExercise = await response.json()
+          const foundExercise = this.state.exercises.findIndex(foundItem => foundItem._id === exercise._id)
+          const copyExercises = [...this.state.exercises]
+          copyExercises[foundExercise].completed = updatedExercise.completed
+          // console.log(updatedExercise)
+          this.setState({exercises: copyExercises})
+      }catch(e){
+          console.error(e)
+      }
+  }
 
   render() {
     return (
@@ -72,7 +95,10 @@ class App extends Component {
             { this.state.exercises.map(exercise => {
               return (
                   <tr key={exercise._id} onMouseOver={()=> this.getExercise(exercise)}>
-                    <td id={exercise._id}>{exercise.exercise}</td>
+                    <td
+                    id={exercise._id}
+                    onClick={()=> {this.toggleComplete(exercise)}}
+                    >{exercise.exercise}</td>
                     <td id={exercise._id}>{exercise.description}</td>
                     <td onClick={() => this.deleteExercise(exercise._id)}>X</td>
                   </tr>
