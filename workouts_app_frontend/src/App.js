@@ -1,4 +1,7 @@
 import React, { Component } from 'react'
+import './css/normalize.css'
+import './css/skeleton.css'
+import './css/index.css'
 import NewForm from './components/NewForm.js'
 import Show from './components/Show.js'
 let baseURL = process.env.REACT_APP_BASEURL
@@ -87,10 +90,10 @@ class App extends Component {
 
   render() {
     return (
-      <div>
+      <div className="container">
         <h1>Exercises</h1>
         <NewForm handleAddExercise={this.handleAddExercise} baseURL={baseURL}/>
-        <table>
+        <table className="u-full-width">
           <tbody>
             { this.state.exercises.map(exercise => {
               return (
