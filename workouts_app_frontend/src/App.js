@@ -100,16 +100,6 @@ class App extends Component {
                     onClick={()=> {this.toggleComplete(exercise)}}
                     >{exercise.exercise}</td>
                     <td id={exercise._id}>{exercise.description}</td>
-                    {/*
-                        <td
-                    onClick={() => {this.toggleComplete(exercise)}}
-                    className={exercise.completed
-                    ? 'completed'
-                    : null}
-                    >
-
-                    </td>
-                    */}
                     <td onClick={() => this.deleteExercise(exercise._id)}>X</td>
                   </tr>
                 )
