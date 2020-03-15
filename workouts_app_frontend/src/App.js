@@ -40,9 +40,9 @@ class App extends Component {
   }
 
   handleAddExercise(exercise) {
-    const copyExercises = [exercise, ...this.state.exercise]
+    const copyExercises = [exercise, ...this.state.exercises]
     this.setState({
-      exercise: copyExercises
+      exercises: copyExercises
     })
   }
 
@@ -94,6 +94,12 @@ class App extends Component {
         <h1>Exercises</h1>
         <NewForm handleAddExercise={this.handleAddExercise} baseURL={baseURL}/>
         <table className="u-full-width">
+          <thead>
+            <tr>
+              <th>Exercise</th>
+              <th>Description</th>
+            </tr>
+          </thead>
           <tbody>
             { this.state.exercises.map(exercise => {
               return (
